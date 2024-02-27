@@ -79,6 +79,15 @@ class WalletTest {
     }
 
     @Test
+    void addExistingCards() {
+        dompet.addCards("ABC", 1234567890);
+        assertThrows(Error.class, () -> {
+            dompet.addCards("ABC", 1234567890);
+        });
+        checkWallet();
+    }
+
+    @Test
     void removeCardExisting() {
         dompet.addCards("ABC", 1234567890);
         dompet.removeCard(1234567890);

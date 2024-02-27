@@ -44,8 +44,19 @@ public class Wallet {
     }
 
     public void addCards(String bank, int accountCardNumber) {
-        Card card = new Card(bank, accountCardNumber);
-        cards.add(card);
+        boolean cardFound = false;
+        for (Card card : cards) {
+            if (card.getCardNumber() == accountCardNumber) {
+                cardFound = true;
+                break;
+            }
+        }
+        if (cardFound) {
+            throw new Error("Card already exists");
+        } else {
+            Card card = new Card(bank, accountCardNumber);
+            cards.add(card);
+        }
     }
 
     public void removeCard(int accountCardNumber) {
