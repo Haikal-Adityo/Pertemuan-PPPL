@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -5,6 +6,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WalletTest {
+
     Wallet dompet = new Wallet("Kal", new ArrayList<>(), 100);
 
     @Test
@@ -73,7 +75,7 @@ class WalletTest {
     }
 
     @Test
-    void addCards() {
+    void testAddCards() {
         dompet.addCards("ABC", 1234567890);
         checkWallet();
     }
