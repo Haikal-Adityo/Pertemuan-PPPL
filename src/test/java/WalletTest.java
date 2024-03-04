@@ -1,13 +1,23 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class WalletTest {
 
-    Wallet dompet = new Wallet("Kal", new ArrayList<>(), 100);
+    Wallet dompet;
+
+    @BeforeAll
+    void initClass() {
+        dompet = new Wallet("Kal", new ArrayList<>(), 100);
+    }
+
+    @AfterEach
+    void cleanup() {
+        dompet = new Wallet("Kal", new ArrayList<>(), 100);
+    }
 
     @Test
     void checkWallet() {
@@ -15,7 +25,7 @@ class WalletTest {
     }
 
     @Test
-    void withdrawNormal() {
+    void testWithdrawNormal() {
         int initialCash = dompet.getCash();
         int withdrawAmount = 55;
         int expectedCashAfterWithdrawn = initialCash - withdrawAmount;
@@ -27,7 +37,7 @@ class WalletTest {
     }
 
     @Test
-    void withdrawNegativeAmount() {
+    void testWithdrawNegativeAmount() {
         int initialCash = dompet.getCash();
         int withdrawAmount = -150;
 
@@ -39,7 +49,7 @@ class WalletTest {
     }
 
     @Test
-    void withdrawMoreThanBalance() {
+    void testWithdrawMoreThanBalance() {
         int initialCash = dompet.getCash();
         int withdrawAmount = 150;
 
@@ -51,7 +61,7 @@ class WalletTest {
     }
 
     @Test
-    void depositPositive() {
+    void testDepositPositive() {
         int initialCash = dompet.getCash();
         int depositAmount = 50;
         int expectedCashAfterDeposit = initialCash + depositAmount;
@@ -63,7 +73,7 @@ class WalletTest {
     }
 
     @Test
-    void depositNegative() {
+    void testDepositNegative() {
         int initialCash = dompet.getCash();
         int depositAmount = -50;
 
@@ -77,11 +87,11 @@ class WalletTest {
     @Test
     void testAddCards() {
         dompet.addCards("ABC", 1234567890);
-        checkWallet();
+        dompet.checkWallet();
     }
 
     @Test
-    void addExistingCards() {
+    void testAddExistingCards() {
         dompet.addCards("ABC", 1234567890);
         assertThrows(Error.class, () -> {
             dompet.addCards("ABC", 1234567890);
@@ -90,16 +100,29 @@ class WalletTest {
     }
 
     @Test
-    void removeCardExisting() {
+    void testRemoveExistingCard() {
         dompet.addCards("ABC", 1234567890);
         dompet.removeCard(1234567890);
+        dompet.checkWallet();
     }
 
     @Test
-    void removeCardNotExisting() {
+    void testRemoveNonExistingCard() {
         assertThrows(Error.class, () -> {
             dompet.removeCard(1234567890);
         });
     }
+
+// *    Untuk melakukan test yang berkonflik apabila tidak memakai AfterEach
+//    @Test
+//    void testAddCards() {
+//        dompet.addCards("ABC", 1234567890);
+//    }
+//
+//    @Test
+//    void testRemoveExistingCard() {
+//        dompet.addCards("ABC", 1234567890);
+//        dompet.removeCard(1234567890);
+//    }
 
 }
